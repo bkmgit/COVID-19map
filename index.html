@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.0.4/echarts-en.js"></script>
@@ -13,121 +12,19 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
 </head>
 <body>
-    <div id="Title">
-    <h1>A Dynamic Spatial Visualization of COVID-19 Infections</h1>
-    <h3><a href="https://gist.github.com/Ovilia/50d143ef42e72ff768719ac6510a7682">Source code</a> and <a href="https://medium.com/@Ovilia/making-a-covid-19-map-with-echarts-and-leaflet-30fdcd8739c6">tutorial</a> by <a href="https://gist.github.com/Ovilia">Ovilia</a>.</h3>
-        <h3>Data from <a href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins University Center for Systems Science and Engineering</a></h3>
-    </div>
-    <div id="main" style="width: 1200px; height: 600px;"></div>
-    <script>
-        var dom = document.getElementById('main');
-        var chart = echarts.init(dom);
+    <h2 id="Title">A Dynamic Spatial Visualization of COVID-19 Infections</h2>
+    <h2><a href="https://gist.github.com/Ovilia/50d143ef42e72ff768719ac6510a7682">Original source code</a> and <a href="https://medium.com/@Ovilia/making-a-covid-19-map-with-echarts-and-leaflet-30fdcd8739c6">tutorial</a> by <a href="https://gist.github.com/Ovilia">Ovilia</a>.</h2>
+    <h3><a href="https://github.com/CSSEGISandData/COVID-19">Data</a> from <a href="https://systems.jhu.edu/research/public-health/ncov/">Johns Hopkins University Center for Systems Science and Engineering</a></h3>
+<div class="w3-container" style="width:100%">
+    <button type="button" onclick="document.getElementById('Title').innerHTML = 'A Dynamic Spatial Visualization of COVID-19 Infections';document.getElementById('jsplot').src = 'infections.html'">Infections</button>
+    <button type="button" onclick="document.getElementById('Title').innerHTML = 'A Dynamic Spatial Visualization of COVID-19 Recoveries';document.getElementById('jsplot').src = 'recoveries.html'">Recoveries</button>
+    <button type="button" onclick="document.getElementById('Title').innerHTML = 'A Dynamic Spatial Visualization of COVID-19 Deaths';document.getElementById('jsplot').src = 'deaths.html'">Deaths</button>
+</div>
+<div class="w3-container" style="width:100%">
 
-          $.get('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv', function (data) {
-                        var lines = data.split('\n');
-                        var result = [];
-                        for (var i = 1; i < lines.length; ++i) {
-                                var columns = lines[i].split(',');
-                                for (var j = 4; j < columns.length; ++j) {
-                                        var value = [
-                                                columns[3],
-                                                columns[2],
-                                                columns[j],
-                                                columns[0] + ' ' + columns[1]
-                                        ];
-                                        var id = j - 4;
-                                        if (result[id]) {
-                                                result[id].push(value);
-                                        }
-                                        else {
-                                                result[id] = [value];
-                                        }
-                                }
-                        }
-
-            var options = result.map(function (day) {
-                return {
-                    series: {
-                        data: day
-                    }
-                };
-            })
-
-            chart.setOption({
-                timeline: {
-                    axisType: 'category',
-                    data: lines[0].split(',').slice(4),
-                    autoPlay: true,
-                    playInterval: 500,
-                    symbolSize: 4,
-                    tooltip: {
-                        formatter: function (params) {
-                            return params.name;
-                        }
-                    },
-                    itemStyle: {
-                        color: '#ccc'
-                    },
-                    lineStyle: {
-                        color: '#eee'
-                    },
-                    label: {
-                        color: '#999'
-                    },
-                    checkpointStyle: {
-                        color: 'red'
-                    },
-                    controlStyle: {
-                        borderColor: '#bbb'
-                    }
-                },
-                options: options
-            })
-        });
-
-        chart.setOption({
-            baseOption: {
-                tooltip: {
-                    show: true,
-                    formatter: function (params) {
-                        return params.value[3] + ':' + params.value[2];
-                    }
-                },
-                series: [{
-                    type: 'scatter',
-                    animation: false,
-                    coordinateSystem: 'leaflet',
-                    data: [],
-                    symbolSize: function (value) {
-                        return value[2] > 0 ? Math.log(value[2]) * 3 : 0;
-                    },
-                    itemStyle: {
-                        color: 'red',
-                        borderWidth: 2,
-                        borderColor: 'rgba(255, 255, 255, 0.5)'
-                    }
-                }],
-                visualMap: {
-                    type: 'continuous',
-                    min: 0,
-                    max: 300,
-                    inRange: {
-                        color: ['orange', 'red'],
-                        opacity: [0.5, 0.8]
-                    },
-                    dimension: 2
-                },
-                leaflet: {
-                    center: [0, 40],
-                    roam: true,
-                    tiles: [{
-                        urlTemplate: 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png'
-                    }]
-                }
-            }
-        });
-    </script>
-    
+        <iframe id="jsplot" src="infections.html" style="height:600px;width:100%">
+        </iframe>
+</div>
 </body>
 </html
 
