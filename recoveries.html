@@ -18,7 +18,7 @@
         var dom = document.getElementById('main');
         var chart = echarts.init(dom);
 
-          $.get('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv', function (data) {
+          $.get('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv', function (data) {
                         var lines = data.split('\n');
                         var result = [];
                         for (var i = 1; i < lines.length; ++i) {
@@ -107,7 +107,7 @@
                     min: 0,
                     max: 300,
                     inRange: {
-                        color: ['orange', 'red'],
+                        color: ['red', 'green'],
                         opacity: [0.5, 0.8]
                     },
                     dimension: 2
