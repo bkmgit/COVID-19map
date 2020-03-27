@@ -32,5 +32,5 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          repository: https://github.com/bkmgit/COVID-19map
+          repository: bkmgit/COVID-19map
           github_token: ${{ secrets.GITHUB_TOKEN }}
