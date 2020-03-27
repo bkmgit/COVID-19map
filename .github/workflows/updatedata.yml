@@ -1,0 +1,36 @@
+name: Update data
+# based on https://github.com/stevenliuyi/covid19/blob/master/.github/workflows/datasest_updates.yml
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "0 */2 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v1
+      - name: Get updated files
+        shell: bash
+        run: |
+          cd data
+          rm virus.csv
+          wget http://hgis.uw.edu/virus/assets/virus.csv
+          rm COVID-19-geographic-disbtribution-worldwide.csv
+          wget https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide.csv
+      - name: Commit data files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git status
+          git add .
+          git commit -m "Update Datasets" || echo "Nothing to commit"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          repository: https://github.com/bkmgit/COVID-19map
+          github_token: ${{ secrets.GITHUB_TOKEN }}
