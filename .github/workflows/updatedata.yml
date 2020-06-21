@@ -19,10 +19,7 @@ jobs:
         run: |
           cd data
           rm virus.csv
-          wget http://hgis.uw.edu/virus/assets/virus.csv
-          rm COVID-19-geographic-disbtribution-worldwide.csv
-          wget https://opendata.ecdc.europa.eu/covid19/casedistribution/csv
-          mv csv COVID-19-geographic-disbtribution-worldwide.csv 
+          wget http://hgis.uw.edu/virus/assets/virus.csv 
       - name: Commit data files
         run: |
           git config --local user.email "action@github.com"
